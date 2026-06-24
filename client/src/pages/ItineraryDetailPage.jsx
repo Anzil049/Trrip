@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../utils/api";
+import { copyToClipboard } from "../utils/clipboard";
 import { ItineraryTimeline } from "../components/ItineraryTimeline";
 import { Copy, Share2 } from "lucide-react";
 
@@ -23,7 +24,7 @@ export const ItineraryDetailPage = () => {
   const share = async () => {
     const data = await api.post(`/itineraries/${id}/share`, {});
     setShareUrl(data.shareUrl);
-    await navigator.clipboard?.writeText(data.shareUrl).catch(() => {});
+    await copyToClipboard(data.shareUrl);
   };
 
   if (loading) {
@@ -55,7 +56,7 @@ export const ItineraryDetailPage = () => {
         {shareUrl ? (
           <div className="panel" style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center" }}>
             <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{shareUrl}</span>
-            <button className="icon-btn" type="button" onClick={() => navigator.clipboard?.writeText(shareUrl)}>
+            <button className="icon-btn" type="button" onClick={() => copyToClipboard(shareUrl)}>
               <Copy size={16} />
             </button>
           </div>

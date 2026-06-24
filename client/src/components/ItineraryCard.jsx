@@ -2,13 +2,13 @@ import { ChevronRight, Share2, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { api } from "../utils/api";
+import { copyToClipboard } from "../utils/clipboard";
 
 export const ItineraryCard = ({ itinerary, onDelete }) => {
   const handleShare = async () => {
     try {
       const data = await api.post(`/itineraries/${itinerary._id}/share`, {});
-      await navigator.clipboard?.writeText(data.shareUrl);
-      toast.success("Share link copied to clipboard!");
+      await copyToClipboard(data.shareUrl);
     } catch (err) {
       console.error("Failed to share itinerary:", err);
       toast.error("Failed to share itinerary. Please try again.");

@@ -16,7 +16,13 @@ export const DashboardPage = () => {
     api
       .get("/itineraries")
       .then((data) => {
-        if (active) setItineraries(data.itineraries || []);
+        if (active) {
+          // Remove duplicates (same destination + title)
+          const unique = (data.itineraries || []).filter((item, index, arr) =>
+            index === arr.findIndex((other) => other.destination === item.destination && other.title === item.title)
+          );
+          setItineraries(unique);
+        }
       })
       .finally(() => active && setLoading(false));
 
@@ -134,7 +140,7 @@ export const DashboardPage = () => {
                 <p className="muted">Upload a booking document to generate your first AI itinerary.</p>
               </div>
             ) : null}
-            {itineraries.slice(0, 6).map((itinerary) => (
+            {itineraries.map((itinerary) => (
               <ItineraryCard itinerary={itinerary} key={itinerary._id} onDelete={handleDelete} />
             ))}
           </div>
