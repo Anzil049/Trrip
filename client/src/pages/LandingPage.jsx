@@ -173,6 +173,9 @@ export const LandingPage = () => {
          if (res.extractedData.destination) setDestination(res.extractedData.destination);
          if (res.extractedData.startDate) setStartDate(res.extractedData.startDate);
          if (res.extractedData.budget) setBudget(res.extractedData.budget);
+         if (res.extractedData.travelers) setTravelers(res.extractedData.travelers);
+         if (res.extractedData.transport) setTransport(res.extractedData.transport);
+         if (res.extractedData.notes) setNotes(res.extractedData.notes);
       }
     } catch (err) {
       clearInterval(progressInterval);

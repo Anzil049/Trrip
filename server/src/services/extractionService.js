@@ -32,7 +32,7 @@ export const extractFromFile = async ({ buffer, mimetype, originalname, notes = 
   const lower = normalized.toLowerCase();
 
   // Call AI for intelligent multimodal extraction
-  const aiData = process.env.GEMINI_API_KEY ? await extractDetailsWithAI(normalized, buffer, mimetype) : {};
+  const aiData = (process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY) ? await extractDetailsWithAI(normalized, buffer, mimetype) : {};
 
   const destination =
     aiData.destination ||
@@ -84,6 +84,9 @@ export const extractFromFile = async ({ buffer, mimetype, originalname, notes = 
     startDate,
     endDate,
     budget,
+    travelers: aiData.travelers || "",
+    transport: aiData.transport || "",
+    notes: aiData.notes || "",
     travelerName,
     tripType,
     durationDays: 3,

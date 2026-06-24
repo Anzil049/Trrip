@@ -1,3 +1,21 @@
+/* ------------------------------------------------------------------ */
+/*  Groq AI Service (primary) with Gemini fallback                    */
+/* ------------------------------------------------------------------ */
+
+const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_TEXT_MODEL = "llama-3.3-70b-versatile";
+const GROQ_VISION_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+
+const GEMINI_MODELS = [
+  "gemini-2.0-flash",
+  "gemini-1.5-flash",
+  "gemini-2.0-flash-lite",
+];
+
+/* ------------------------------------------------------------------ */
+/*  Fallback builders (used when AI is unavailable)                   */
+/* ------------------------------------------------------------------ */
+
 const buildFallbackDays = (profile) => {
   const destination = profile.destination || "your destination";
   const days = [];
@@ -47,183 +65,53 @@ const buildFallbackDays = (profile) => {
 const buildFallbackSummary = (profile) =>
   `AI-generated itinerary for ${profile.destination}. Built from the uploaded booking details and tuned for a ${(profile.tripType || profile.travelPace || "balanced").toLowerCase()} trip.`;
 
-export const generateItinerary = async (profile) => {
-  if (process.env.GEMINI_API_KEY) {
-    return generateWithGemini(profile);
+/* ------------------------------------------------------------------ */
+/*  Groq helper (OpenAI-compatible API)                               */
+/* ------------------------------------------------------------------ */
+
+const callGroq = async (messages, { model = GROQ_TEXT_MODEL, temperature = 0.7, maxTokens = 4000, jsonMode = true } = {}) => {
+  const response = await fetch(GROQ_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+      temperature,
+      max_tokens: maxTokens,
+      ...(jsonMode && { response_format: { type: "json_object" } }),
+    }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Groq ${response.status}: ${err.substring(0, 300)}`);
   }
 
-  return {
-    summary: buildFallbackSummary(profile),
-    itineraryDays: buildFallbackDays(profile),
-  };
+  const json = await response.json();
+  return json.choices?.[0]?.message?.content || "{}";
 };
 
-const generateWithGemini = async (profile) => {
-  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`;
+/* ------------------------------------------------------------------ */
+/*  Gemini helper (fallback)                                          */
+/* ------------------------------------------------------------------ */
 
+const callGemini = async (parts, { temperature = 0.7, maxTokens = 4000 } = {}) => {
   const payload = JSON.stringify({
-    contents: [
-      {
-        role: "user",
-        parts: [
-          {
-            text: [
-              "Your itineraries must be extremely comprehensive. Include specific places to visit, hotels, exact names of recommended restaurants, detailed activities, and localized tips.",
-              "CRITICAL: You must provide ALL details as point-by-point bullet lists (arrays of strings). Do NOT write long paragraphs.",
-              "For 'notes', provide deep, insightful local advice such as opening hours, ticket booking tips, hotels, or cultural norms.",
-              "Return ONLY valid JSON with this exact shape: {\"summary\": string, \"itineraryDays\": [{\"day\": number, \"title\": string, \"highlights\": string[], \"activities\": [{\"time\": string, \"details\": string}], \"meals\": string[], \"transport\": string[], \"notes\": string[]}]}",
-              `Build a structured, highly detailed travel itinerary from this profile:\n${JSON.stringify(profile, null, 2)}`,
-            ].join("\n\n"),
-          },
-        ],
-      },
-    ],
+    contents: [{ role: "user", parts }],
     generationConfig: {
-      temperature: 0.7,
-      maxOutputTokens: 4000,
+      temperature,
+      maxOutputTokens: maxTokens,
       responseMimeType: "application/json",
     },
   });
 
-  const fallbackModels = [
-    process.env.GEMINI_MODEL || "gemini-3.5-flash",
-    "gemini-3.5-flash",
-    "gemini-2.5-flash",
-    "gemini-flash-latest",
-    "gemini-pro-latest"
-  ];
-
-  let response;
-  let successModel = null;
-
-  for (const modelName of fallbackModels) {
+  for (const modelName of GEMINI_MODELS) {
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${process.env.GEMINI_API_KEY}`;
-    
+
     let retries = 2;
-    while (retries > 0) {
-      response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: payload,
-      });
-
-      if (response.ok) {
-        successModel = modelName;
-        break;
-      }
-      
-      if (response.status === 503 || response.status === 429) {
-        retries--;
-        if (retries > 0) {
-          console.warn(`Gemini (${modelName}) ${response.status}. Retrying in 2 seconds...`);
-          await new Promise((res) => setTimeout(res, 2000));
-          continue;
-        }
-      } else {
-        break; // break retry loop for 400s etc
-      }
-    }
-    
-    if (successModel) break; // found a working model
-    console.warn(`Model ${modelName} failed, falling back to next...`);
-  }
-
-  if (!response || !response.ok) {
-    const errorText = response ? await response.text() : "No response";
-    const status = response ? response.status : 500;
-    console.error("Gemini API Error (All models exhausted):", status, errorText);
-    
-    if (status === 429) {
-      throw new Error("API Rate limit exceeded on all models. Please wait a minute and try again.");
-    } else if (status === 503) {
-      throw new Error("Google's AI servers are completely overloaded right now. Please try again later.");
-    }
-    throw new Error("Failed to generate itinerary with AI. Please try again.");
-  }
-
-  const json = await response.json();
-  const text =
-    json?.candidates?.[0]?.content?.parts
-      ?.map((part) => part.text || "")
-      .join("")
-      .trim() || "";
-
-  let cleanText = text;
-  if (cleanText.startsWith("```json")) {
-    cleanText = cleanText.substring(7);
-  } else if (cleanText.startsWith("```")) {
-    cleanText = cleanText.substring(3);
-  }
-  if (cleanText.endsWith("```")) {
-    cleanText = cleanText.substring(0, cleanText.length - 3);
-  }
-  cleanText = cleanText.trim();
-
-  try {
-    const parsed = JSON.parse(cleanText);
-    return {
-      summary: parsed.summary || buildFallbackSummary(profile),
-      itineraryDays: Array.isArray(parsed.itineraryDays) ? parsed.itineraryDays : buildFallbackDays(profile),
-    };
-  } catch (err) {
-    console.error("Failed to parse AI response:", err);
-    console.warn("Falling back to standard template due to JSON parse error.");
-    return {
-      summary: buildFallbackSummary(profile),
-      itineraryDays: buildFallbackDays(profile),
-    };
-  }
-};
-
-export const extractDetailsWithAI = async (text, buffer = null, mimetype = null) => {
-  const fallbackModels = [
-    process.env.GEMINI_MODEL || "gemini-3.5-flash",
-    "gemini-3.5-flash",
-    "gemini-2.5-flash",
-    "gemini-flash-latest",
-    "gemini-pro-latest"
-  ];
-
-  const parts = [];
-  
-  if (buffer && mimetype) {
-    parts.push({
-      inlineData: {
-        mimeType: mimetype,
-        data: buffer.toString("base64")
-      }
-    });
-  }
-
-  parts.push({
-    text: [
-      "Extract the following travel details from this booking document.",
-      "Return ONLY valid JSON with this exact shape: {\"destination\": \"City, Country\", \"startDate\": \"YYYY-MM-DD\", \"budget\": number}",
-      "If any field cannot be found, return an empty string for text or 0 for numbers.",
-      "Text context (if any):",
-      text
-    ].join("\n")
-  });
-
-  const payload = JSON.stringify({
-    contents: [{
-      role: "user",
-      parts: parts
-    }],
-    generationConfig: {
-      temperature: 0.1,
-      maxOutputTokens: 200,
-      responseMimeType: "application/json",
-    }
-  });
-
-  for (const modelName of fallbackModels) {
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${process.env.GEMINI_API_KEY}`;
-    
-    let retries = 2;
-    let successModel = false;
-
     while (retries > 0) {
       try {
         const response = await fetch(endpoint, {
@@ -233,45 +121,183 @@ export const extractDetailsWithAI = async (text, buffer = null, mimetype = null)
         });
 
         if (response.ok) {
-          successModel = true;
           const json = await response.json();
-          const responseText = json?.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
-          let cleanText = responseText;
-          const firstBrace = responseText.indexOf('{');
-          const lastBrace = responseText.lastIndexOf('}');
-          if (firstBrace !== -1 && lastBrace !== -1 && lastBrace >= firstBrace) {
-            cleanText = responseText.substring(firstBrace, lastBrace + 1);
-          } else {
-            cleanText = "{}";
-          }
-          
-          try {
-            return JSON.parse(cleanText.trim());
-          } catch (parseError) {
-            console.error(`AI Extraction JSON parse failed for ${modelName}. Response:`, responseText);
-            break;
-          }
-        } else {
-          if (response.status === 503 || response.status === 429) {
-            retries--;
-            if (retries > 0) {
-              console.warn(`Gemini (${modelName}) ${response.status}. Retrying in 2 seconds...`);
-              await new Promise((res) => setTimeout(res, 2000));
-              continue;
-            }
-          }
-          const errorText = await response.text();
-          console.error(`AI Extraction API failed for ${modelName} with status ${response.status}:`, errorText);
-          break; // break retry loop for 400s etc
+          const text = json?.candidates?.[0]?.content?.parts?.map((p) => p.text || "").join("").trim() || "{}";
+          let clean = text;
+          if (clean.startsWith("```json")) clean = clean.substring(7);
+          else if (clean.startsWith("```")) clean = clean.substring(3);
+          if (clean.endsWith("```")) clean = clean.substring(0, clean.length - 3);
+          return clean.trim();
         }
+
+        if (response.status === 429 || response.status === 503) {
+          retries--;
+          if (retries > 0) {
+            console.warn(`Gemini (${modelName}) ${response.status}. Retrying in 2s...`);
+            await new Promise((r) => setTimeout(r, 2000));
+            continue;
+          }
+        }
+        const errText = await response.text();
+        console.warn(`Gemini (${modelName}) failed ${response.status}:`, errText.substring(0, 200));
+        break;
       } catch (e) {
-        console.error(`AI Extraction network error for ${modelName}:`, e);
-        break; // break retry loop on network error
+        console.warn(`Gemini (${modelName}) network error:`, e.message);
+        break;
       }
     }
   }
 
-  return { destination: "", startDate: "", budget: 0 };
+  throw new Error("Gemini: all models exhausted");
 };
 
+/* ------------------------------------------------------------------ */
+/*  Generate itinerary – Groq → Gemini → Fallback                    */
+/* ------------------------------------------------------------------ */
 
+export const generateItinerary = async (profile) => {
+  const systemPrompt = [
+    "You are a world-class travel planner AI.",
+    "Your itineraries must be extremely comprehensive. Include specific places to visit, hotels, exact names of recommended restaurants, detailed activities, and localized tips.",
+    "CRITICAL: You must provide ALL details as point-by-point bullet lists (arrays of strings). Do NOT write long paragraphs.",
+    "For 'notes', provide deep, insightful local advice such as opening hours, ticket booking tips, hotels, or cultural norms.",
+    'Return ONLY valid JSON with this exact shape: {"summary": string, "itineraryDays": [{"day": number, "title": string, "highlights": string[], "activities": [{"time": string, "details": string}], "meals": string[], "transport": string[], "notes": string[]}]}',
+  ].join("\n\n");
+
+  const userPrompt = `Build a structured, highly detailed travel itinerary from this profile:\n${JSON.stringify(profile, null, 2)}`;
+
+  let raw = null;
+
+  // Try Groq first (14,400 free requests/day!)
+  if (process.env.GROQ_API_KEY) {
+    try {
+      console.log("Trying Groq for itinerary generation...");
+      raw = await callGroq(
+        [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        { temperature: 0.7, maxTokens: 4000 }
+      );
+      console.log("Groq itinerary generated successfully.");
+    } catch (e) {
+      console.warn("Groq failed:", e.message);
+    }
+  }
+
+  // Fall back to Gemini
+  if (!raw && process.env.GEMINI_API_KEY) {
+    try {
+      console.log("Trying Gemini for itinerary generation...");
+      raw = await callGemini(
+        [{ text: `${systemPrompt}\n\n${userPrompt}` }],
+        { temperature: 0.7, maxTokens: 4000 }
+      );
+      console.log("Gemini itinerary generated successfully.");
+    } catch (e) {
+      console.warn("Gemini failed:", e.message);
+    }
+  }
+
+  if (!raw) {
+    console.warn("All AI providers failed. Using fallback template.");
+    return { summary: buildFallbackSummary(profile), itineraryDays: buildFallbackDays(profile) };
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+    return {
+      summary: parsed.summary || buildFallbackSummary(profile),
+      itineraryDays: Array.isArray(parsed.itineraryDays) ? parsed.itineraryDays : buildFallbackDays(profile),
+    };
+  } catch {
+    console.error("Failed to parse AI response. Using fallback.");
+    return { summary: buildFallbackSummary(profile), itineraryDays: buildFallbackDays(profile) };
+  }
+};
+
+/* ------------------------------------------------------------------ */
+/*  Extract details from uploaded document – Groq → Gemini → empty    */
+/* ------------------------------------------------------------------ */
+
+export const extractDetailsWithAI = async (text, buffer = null, mimetype = null) => {
+  const extractionPrompt = [
+    "Extract the following travel details from this booking document.",
+    "The 'destination' MUST be the pure geographic arrival city name ONLY (e.g., 'Rio de Janeiro', 'Dubai'). Do NOT include airport codes (like '(GIG)') or countries.",
+    "Ignore warning labels or instructions like 'provide PNR'.",
+    "Count the number of passengers to determine 'travelers'. 1 = 'solo', 2 = 'couple', 3+ = 'family'.",
+    "Extract the transportation mode as 'transport' (e.g., 'flight', 'train', 'bus').",
+    "Extract any special instructions, PNR, or booking reference into 'notes'.",
+    'Return ONLY valid JSON: {"destination": "City Name", "startDate": "YYYY-MM-DD", "budget": "mid-range", "travelers": "solo", "transport": "flight", "notes": ""}',
+    "If any field cannot be found, return an empty string.",
+    "",
+    "Text context:",
+    text,
+  ].join("\n");
+
+  let raw = null;
+
+  // Try Groq first (supports vision with llama-3.2-11b-vision-preview)
+  if (process.env.GROQ_API_KEY) {
+    try {
+      const isImage = buffer && mimetype && mimetype.startsWith("image/");
+      const content = [];
+
+      if (isImage) {
+        content.push({
+          type: "image_url",
+          image_url: { url: `data:${mimetype};base64,${buffer.toString("base64")}` },
+        });
+      }
+      content.push({ type: "text", text: extractionPrompt });
+
+      raw = await callGroq(
+        [
+          { role: "system", content: "You are a travel document parser. Extract travel details accurately." },
+          { role: "user", content },
+        ],
+        {
+          model: isImage ? GROQ_VISION_MODEL : GROQ_TEXT_MODEL,
+          temperature: 0.1,
+          maxTokens: 300,
+          jsonMode: !isImage, // vision model doesn't support json_object mode
+        }
+      );
+      console.log("Groq extraction succeeded.");
+    } catch (e) {
+      console.warn("Groq extraction failed:", e.message);
+    }
+  }
+
+  // Fall back to Gemini
+  if (!raw && process.env.GEMINI_API_KEY) {
+    try {
+      const parts = [];
+      if (buffer && mimetype) {
+        parts.push({ inlineData: { mimeType: mimetype, data: buffer.toString("base64") } });
+      }
+      parts.push({ text: extractionPrompt });
+
+      raw = await callGemini(parts, { temperature: 0.1, maxTokens: 300 });
+      console.log("Gemini extraction succeeded.");
+    } catch (e) {
+      console.warn("Gemini extraction failed:", e.message);
+    }
+  }
+
+  if (!raw) {
+    return { destination: "", startDate: "", budget: "mid-range" };
+  }
+
+  try {
+    const firstBrace = raw.indexOf("{");
+    const lastBrace = raw.lastIndexOf("}");
+    if (firstBrace !== -1 && lastBrace > firstBrace) {
+      return JSON.parse(raw.substring(firstBrace, lastBrace + 1));
+    }
+    return JSON.parse(raw);
+  } catch {
+    console.error("Failed to parse AI extraction response.");
+    return { destination: "", startDate: "", budget: "mid-range" };
+  }
+};
