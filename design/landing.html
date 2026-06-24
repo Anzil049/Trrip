@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trrip AI - Smart Travel Planning</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#dae2fd",
+                    "primary-container": "#4da8ff",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "outline": "#707883",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-background": "#0b1c30",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#00497d",
+                    "surface-tint": "#0061a3",
+                    "tertiary-container": "#a1a4a6",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "error": "#ba1a1a",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-container-low": "#eff4ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#373a3c",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#404752",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary-fixed": "#131b2e",
+                    "primary": "#0061a3",
+                    "on-primary-container": "#003c67",
+                    "primary-fixed-dim": "#9ecaff",
+                    "tertiary": "#5c5f61",
+                    "inverse-surface": "#213145",
+                    "surface-bright": "#f8f9ff",
+                    "on-secondary-container": "#5c647a",
+                    "on-tertiary-fixed": "#191c1e",
+                    "error-container": "#ffdad6",
+                    "inverse-primary": "#9ecaff",
+                    "tertiary-fixed": "#e0e3e5",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "secondary": "#565e74",
+                    "surface": "#f8f9ff",
+                    "primary-fixed": "#d1e4ff",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#001d36",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "surface-container": "#e5eeff",
+                    "surface-container-high": "#dce9ff",
+                    "outline-variant": "#c0c7d3",
+                    "surface-variant": "#d3e4fe",
+                    "background": "#f8f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "16px",
+                    "lg": "16px",
+                    "xl": "24px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "2xl": "48px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "max-width": "1280px",
+                    "3xl": "64px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "gutter": "20px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Be Vietnam Pro"],
+                    "display": ["Be Vietnam Pro"],
+                    "label-sm": ["Be Vietnam Pro"],
+                    "headline-lg-mobile": ["Be Vietnam Pro"],
+                    "body-lg": ["Be Vietnam Pro"],
+                    "headline-sm": ["Be Vietnam Pro"],
+                    "headline-md": ["Be Vietnam Pro"],
+                    "body-sm": ["Be Vietnam Pro"],
+                    "body-md": ["Be Vietnam Pro"],
+                    "label-md": ["Be Vietnam Pro"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .bento-card {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+        }
+        .timeline-connector::after {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 40px;
+            bottom: -20px;
+            width: 2px;
+            background: #E2E8F0;
+        }
+        .timeline-item:last-child .timeline-connector::after {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-desktop h-2xl bg-surface/80 backdrop-blur-md">
+<div class="flex items-center gap-xl">
+<span class="font-display text-headline-md text-primary">Trrip AI</span>
+<div class="hidden md:flex gap-lg">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md transition-colors" href="#">Explore</a>
+<a class="text-on-surface-variant hover:text-primary font-label-md transition-colors" href="#">Community</a>
+<a class="text-on-surface-variant hover:text-primary font-label-md transition-colors" href="#">Support</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden sm:flex relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-xl pr-md py-xs rounded-full border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary-container outline-none transition-all w-64 text-body-sm" placeholder="Search itineraries..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant p-xs rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant p-xs rounded-full transition-colors">help</button>
+<div class="w-lg h-lg rounded-full bg-surface-container overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a modern, smiling world traveler with soft cinematic lighting, wearing a stylish minimalist outfit, set against a clean out-of-focus urban balcony backdrop at dusk." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgBEEmsbw8WPTJtRY0uyoIXOKBVdUzHSn9iZ-WQqDe6UL27WnoFuTTItM2d4uAC7iIf3CaFJfjY3BZuXydA4XJctGrAWsnnx_etjwM24lm-Kt4cbQ_o-TSFv63TraOyPTIqhZ0PVH4ah6xPgGDR6W-tMjuQaHaOKrPr-0F-juL6qacH18l-xuC6nTEoQrc1NmkDG9TU2CTW-gV5BMnd-SGbG0Vkpl2lNhcDhS3wzWo88wf4-PAt4G98v7CFjRBPO7VCPqnYsbJEcs"/>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-24 overflow-hidden">
+
+<div class="max-w-max-width mx-auto px-margin-desktop text-center relative z-10">
+<div class="inline-flex items-center gap-sm px-md py-xs bg-primary-container/10 text-primary rounded-full mb-lg">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span class="font-label-md">v2.0 is now live</span>
+</div>
+<h1 class="font-display text-display md:text-[64px] max-w-4xl mx-auto mb-md leading-tight">
+                Turn Travel Bookings Into <span class="text-primary">Smart AI Itineraries</span>
+</h1>
+<p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-xl">
+                Upload flight tickets, hotel bookings, and travel documents. Let AI build your complete trip plan in seconds. No more manual data entry.
+            </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-md">
+<button class="bg-primary text-on-primary px-xl py-md rounded-lg font-label-md shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-sm">
+                    Generate Itinerary
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="bg-surface-container-lowest text-on-surface border border-outline-variant px-xl py-md rounded-lg font-label-md hover:bg-surface-variant transition-all flex items-center gap-sm">
+<span class="material-symbols-outlined">play_circle</span>
+                    Watch Demo
+                </button>
+</div>
+<!-- Dashboard Preview -->
+<div class="mt-3xl rounded-xl overflow-hidden border border-outline-variant shadow-2xl relative bg-surface mx-auto max-w-5xl group">
+<img class="w-full aspect-[16/9] object-cover group-hover:scale-[1.01] transition-transform duration-700" data-alt="A sleek, professional screenshot of a modern web application dashboard. The UI features a clean white background, vibrant blue accents, and elegant typography. Visible elements include a detailed travel timeline, interactive map markers, and cards displaying flight details and hotel reservations in a minimalist corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsTTk60R4ICxWS-Fy4VBB0UzWmrjmEkVTKGwZmvPUUbCEppEh8PmA3lWTcOa3cqbzn3m13SF5CvYamLYmHzlka-erEEyXTyh4vNhIXc4o2VXNvXfyO9yCDyiTBbCnlLWoFdGyiSgqtjFpYnx2hGu2J99LkZRD6Ezn6KZ_cu6BGCOBFtTHU94BhAdU8oIjlQWojMqfHMoL-24N8jHnhAil5a5U24WSwoo8qHRRvf1rj2j_s3dRmu3_CXANkhGhSU6JSGAHJaE_GQNc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none"></div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="py-2xl bg-surface-container-low">
+<div class="max-w-max-width mx-auto px-margin-desktop">
+<div class="text-center mb-2xl">
+<h2 class="font-headline-lg text-on-surface mb-sm">Unfair Travel Advantages</h2>
+<p class="text-on-surface-variant max-w-xl mx-auto">Precision tools designed for the modern nomad to reclaim hours of planning time.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg auto-rows-[280px]">
+<!-- Large Feature -->
+<div class="md:col-span-8 bento-card bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex flex-col justify-between overflow-hidden relative">
+<div class="relative z-10">
+<div class="w-12 h-12 bg-primary-container/20 text-primary rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined">cloud_upload</span>
+</div>
+<h3 class="font-headline-sm mb-xs">Seamless Upload</h3>
+<p class="text-on-surface-variant max-w-sm">Drag and drop PDFs, screenshots, or email confirmations. Our OCR engine handles the rest.</p>
+</div>
+<div class="absolute right-0 bottom-0 w-1/2 h-full opacity-50">
+<img class="w-full h-full object-cover" data-alt="A minimalist abstract 3D render representing data flow and digital documents being uploaded into a cloud interface. Soft blue gradients, floating glass-like squares, and a clean minimalist aesthetic with high-key lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMvAfyIA9v9tqeeHo0AHU983fdMLXwjXEOV79NownmLX4VB27RJpqqKfZdEV7K39Kh7yRVoBdY8V5sAGtkEfuyHtu9dzV-BV7SynfeBxluvDeJkA3nVeS72SQIHOToNkjnN0QEqHB_cJrvORLhENx0w_-6M8l52n-Z0SZIN3Yb3emCu1IAwHaO19mKQi2-oivVBlZwcw4CeiaovoVyApg72NWsuU-4cM293bWm_dJwOHABOQKIRIeBba_DFJJEUH3Ts1ys2FzXBxM"/>
+</div>
+</div>
+<!-- Small Feature -->
+<div class="md:col-span-4 bento-card bg-primary text-on-primary p-lg rounded-xl flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 bg-white/20 text-white rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<h3 class="font-headline-sm mb-xs">Smart Gen</h3>
+<p class="text-white/80">AI fills the gaps in your schedule with personalized recommendations based on your style.</p>
+</div>
+</div>
+<!-- Small Feature -->
+<div class="md:col-span-4 bento-card bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 bg-secondary-container/30 text-secondary rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined">data_exploration</span>
+</div>
+<h3 class="font-headline-sm mb-xs">Data Extraction</h3>
+<p class="text-on-surface-variant">Automatically identify dates, confirmation codes, and addresses without manual input.</p>
+</div>
+</div>
+<!-- Large Feature -->
+<div class="md:col-span-8 bento-card bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex flex-col justify-between overflow-hidden relative">
+<div class="relative z-10">
+<div class="w-12 h-12 bg-tertiary-container/20 text-tertiary rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined">share</span>
+</div>
+<h3 class="font-headline-sm mb-xs">Collaborative Sharing</h3>
+<p class="text-on-surface-variant max-w-sm">Share live links with travel partners or export to Apple Wallet and Google Calendar.</p>
+</div>
+<div class="absolute right-margin-desktop bottom-margin-desktop w-64 h-32 bg-surface-container border border-outline-variant rounded-lg p-md shadow-lg">
+<div class="flex items-center gap-sm mb-sm">
+<div class="w-sm h-sm rounded-full bg-primary"></div>
+<span class="text-body-sm font-bold">Shared Itinerary: Tokyo 2024</span>
+</div>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-300"></div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-400"></div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-500"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section class="py-2xl">
+<div class="max-w-max-width mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-3xl items-center">
+<div>
+<h2 class="font-headline-lg text-on-surface mb-lg">From Inbox to Itinerary in Four Simple Steps</h2>
+<div class="space-y-xl">
+<div class="timeline-item relative pl-xl timeline-connector">
+<div class="absolute left-0 top-0 w-10 h-10 bg-primary-fixed rounded-full flex items-center justify-center text-primary font-bold z-10">1</div>
+<h4 class="font-headline-sm mb-xs">Collect Documents</h4>
+<p class="text-on-surface-variant">Gather your confirmation emails, hotel vouchers, and flight PDFs.</p>
+</div>
+<div class="timeline-item relative pl-xl timeline-connector">
+<div class="absolute left-0 top-0 w-10 h-10 bg-surface-container-high rounded-full flex items-center justify-center text-on-surface-variant font-bold z-10">2</div>
+<h4 class="font-headline-sm mb-xs">Instant Upload</h4>
+<p class="text-on-surface-variant">Drop everything into our secure interface. No sorting required.</p>
+</div>
+<div class="timeline-item relative pl-xl timeline-connector">
+<div class="absolute left-0 top-0 w-10 h-10 bg-surface-container-high rounded-full flex items-center justify-center text-on-surface-variant font-bold z-10">3</div>
+<h4 class="font-headline-sm mb-xs">AI Processing</h4>
+<p class="text-on-surface-variant">Our AI cross-references times and locations to build your logic-checked flow.</p>
+</div>
+<div class="timeline-item relative pl-xl">
+<div class="absolute left-0 top-0 w-10 h-10 bg-surface-container-high rounded-full flex items-center justify-center text-on-surface-variant font-bold z-10">4</div>
+<h4 class="font-headline-sm mb-xs">Refine &amp; Go</h4>
+<p class="text-on-surface-variant">Add local restaurants, book tours via AI suggestions, and hit the road.</p>
+</div>
+</div>
+</div>
+<div class="relative">
+<div class="aspect-square rounded-2xl overflow-hidden bg-slate-200 shadow-xl">
+<img class="w-full h-full object-cover" data-alt="A sophisticated lifestyle image of a traveler using a tablet at a modern airport lounge. The lighting is soft and golden from a sunset through large windows. The traveler is calmly viewing a detailed digital itinerary map on their device, embodying the 'Intuitive Path' brand personality of clarity and efficiency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoI64ih_wkQkm6JE1CBzPvQZeikthJj75s8i2-Mf45eVcTtln1NxICLhGfaPWivK4qWHISEoG8jP2qZpU0wyhwEn_tnj7JVQC9ZKVNws-x2SV9k7iWo5x6UjjkfCYqFLx_JanohpmL7k-E40nJbtmhhIGfy1hrJ7zSmxcQP8BvikzmiLLeNYyyPjdKCetFtV0MpM5J35Tk8RdfKgLCEReE-gaZtTZKzaFreglfNng92KVYcPYhBYKwTDXBttXNZd5qmsDXeGWr4Z4"/>
+</div>
+<div class="absolute -bottom-md -left-md bg-surface-container-lowest p-md rounded-xl shadow-2xl border border-outline-variant max-w-xs animate-bounce-slow">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-green-500" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-body-sm font-bold">Extraction Successful</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1">Flight NH805: Tokyo Haneda (HND) - 10:45 AM</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-2xl bg-surface-bright">
+<div class="max-w-max-width mx-auto px-margin-desktop">
+<h2 class="font-headline-lg text-center mb-2xl">Trusted by 10,000+ Nomads</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center gap-sm mb-md">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface mb-lg italic">"Trrip AI saved me at least 5 hours of planning for my Europe multi-city trip. The way it automatically handled my train tickets and Airbnbs was magical."</p>
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-slate-300"></div>
+<div>
+<p class="font-label-md">Alex Rivera</p>
+<p class="text-xs text-on-surface-variant">Digital Nomad</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center gap-sm mb-md">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface mb-lg italic">"The smart suggestions are actually good. It recommended a local ramen shop in Kyoto that wasn't on any of the typical 'best of' lists."</p>
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-slate-300"></div>
+<div>
+<p class="font-label-md">Sarah Chen</p>
+<p class="text-xs text-on-surface-variant">UX Designer</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center gap-sm mb-md">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface mb-lg italic">"Sharing my itinerary with my family was so easy. They could see exactly where I was and what I was doing without me texting every hour."</p>
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-slate-300"></div>
+<div>
+<p class="font-label-md">Mark Thompson</p>
+<p class="text-xs text-on-surface-variant">Venture Lead</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing -->
+<section class="py-2xl">
+<div class="max-w-max-width mx-auto px-margin-desktop">
+<div class="text-center mb-2xl">
+<h2 class="font-headline-lg mb-sm">Transparent Pricing</h2>
+<p class="text-on-surface-variant">Choose the plan that fits your travel frequency.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto gap-xl">
+<!-- Free Plan -->
+<div class="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant flex flex-col justify-between">
+<div>
+<p class="font-label-md text-on-surface-variant mb-xs">Explorer</p>
+<h3 class="font-headline-md mb-md">$0 <span class="text-body-sm font-normal text-on-surface-variant">/month</span></h3>
+<ul class="space-y-sm mb-xl">
+<li class="flex items-center gap-sm text-body-sm">
+<span class="material-symbols-outlined text-green-500 text-sm">check</span> 1 Itinerary / month
+                            </li>
+<li class="flex items-center gap-sm text-body-sm">
+<span class="material-symbols-outlined text-green-500 text-sm">check</span> Basic PDF Extraction
+                            </li>
+<li class="flex items-center gap-sm text-body-sm">
+<span class="material-symbols-outlined text-green-500 text-sm">check</span> Community Support
+                            </li>
+</ul>
+</div>
+<button class="w-full py-md rounded-lg border border-primary text-primary font-label-md hover:bg-primary-container/10 transition-colors">Start for Free</button>
+</div>
+<!-- Pro Plan -->
+<div class="bg-surface-container-highest p-xl rounded-xl border-2 border-primary flex flex-col justify-between relative">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-on-primary px-md py-1 rounded-full text-xs font-bold uppercase tracking-wider">Most Popular</div>
+<div>
+<p class="font-label-md text-primary mb-xs">Premium Nomad</p>
+<h3 class="font-headline-md mb-md">$12 <span class="text-body-sm font-normal text-on-surface-variant">/month</span></h3>
+<ul class="space-y-sm mb-xl">
+<li class="flex items-center gap-sm text-body-sm font-bold">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">star</span> Unlimited Itineraries
+                            </li>
+<li class="flex items-center gap-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-sm">check</span> Priority AI Processing
+                            </li>
+<li class="flex items-center gap-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-sm">check</span> Smart Suggestions
+                            </li>
+<li class="flex items-center gap-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-sm">check</span> Calendar Sync
+                            </li>
+<li class="flex items-center gap-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-sm">check</span> Offline Mode
+                            </li>
+</ul>
+</div>
+<button class="w-full py-md rounded-lg bg-primary text-on-primary font-label-md shadow-lg hover:brightness-110 transition-all">Go Premium</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-inverse-surface text-inverse-on-surface pt-3xl pb-xl">
+<div class="max-w-max-width mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-xl mb-2xl">
+<div class="col-span-1 md:col-span-1">
+<span class="font-display text-headline-md text-inverse-primary mb-md block">Trrip AI</span>
+<p class="text-surface-variant text-body-sm">The intuitive path to travel planning. We transform your chaos into a perfectly ordered journey.</p>
+</div>
+<div>
+<h5 class="font-label-md mb-lg">Product</h5>
+<ul class="space-y-sm text-body-sm text-surface-variant">
+<li><a class="hover:text-inverse-primary transition-colors" href="#">Features</a></li>
+<li><a class="hover:text-inverse-primary transition-colors" href="#">Integrations</a></li>
+<li><a class="hover:text-inverse-primary transition-colors" href="#">Pricing</a></li>
+<li><a class="hover:text-inverse-primary transition-colors" href="#">Mobile App</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-md mb-lg">Company</h5>
+<ul class="space-y-sm text-body-sm text-surface-variant">
+<li><a class="hover:text-inverse-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-inverse-primary transition-colors" href="#">Blog</a></li>
+<li><a class="hover:text-inverse-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-inverse-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-md mb-lg">Follow Us</h5>
+<div class="flex gap-md">
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">public</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">alternate_email</span>
+</a>
+</div>
+</div>
+</div>
+<div class="border-t border-white/10 pt-xl flex flex-col md:flex-row justify-between items-center gap-md text-xs text-surface-variant">
+<p>© 2024 Trrip AI Inc. All rights reserved.</p>
+<div class="flex gap-xl">
+<a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- FAB (Suppressed based on logic for landing page, but adding one for "Create" context as a demo) -->
+<button class="fixed bottom-margin-desktop right-margin-desktop w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined">add</span>
+</button>
+<script>
+        // Micro-interaction for smooth nav transitions
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-sm');
+            } else {
+                nav.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+</body></html>

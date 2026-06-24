@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Review Extracted Data | Trrip AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;family=Poppins:wght@300;400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#dae2fd",
+                    "primary-container": "#4da8ff",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "outline": "#707883",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-background": "#0b1c30",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#00497d",
+                    "surface-tint": "#0061a3",
+                    "tertiary-container": "#a1a4a6",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "error": "#ba1a1a",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-container-low": "#eff4ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#373a3c",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#404752",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary-fixed": "#131b2e",
+                    "primary": "#0061a3",
+                    "on-primary-container": "#003c67",
+                    "primary-fixed-dim": "#9ecaff",
+                    "tertiary": "#5c5f61",
+                    "inverse-surface": "#213145",
+                    "surface-bright": "#f8f9ff",
+                    "on-secondary-container": "#5c647a",
+                    "on-tertiary-fixed": "#191c1e",
+                    "error-container": "#ffdad6",
+                    "inverse-primary": "#9ecaff",
+                    "tertiary-fixed": "#e0e3e5",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "secondary": "#565e74",
+                    "surface": "#f8f9ff",
+                    "primary-fixed": "#d1e4ff",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#001d36",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "surface-container": "#e5eeff",
+                    "surface-container-high": "#dce9ff",
+                    "outline-variant": "#c0c7d3",
+                    "surface-variant": "#d3e4fe",
+                    "background": "#f8f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "2xl": "48px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "max-width": "1280px",
+                    "3xl": "64px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "gutter": "20px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Poppins", "sans-serif"],
+                    "display": ["Poppins", "sans-serif"],
+                    "label-sm": ["Poppins", "sans-serif"],
+                    "headline-lg-mobile": ["Poppins", "sans-serif"],
+                    "body-lg": ["Poppins", "sans-serif"],
+                    "headline-sm": ["Poppins", "sans-serif"],
+                    "headline-md": ["Poppins", "sans-serif"],
+                    "body-sm": ["Poppins", "sans-serif"],
+                    "body-md": ["Poppins", "sans-serif"],
+                    "label-md": ["Poppins", "sans-serif"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Poppins', 'Be Vietnam Pro', sans-serif;
+            background-color: #F8FAFC; /* Level 0 */
+        }
+        .glass-nav {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        .card-shadow {
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05);
+        }
+        .card-shadow:hover {
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .timeline-line {
+            width: 2px;
+            background: #E2E8F0;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+        }
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: #0061a3;
+            border-radius: 50%;
+            position: absolute;
+            left: 15px;
+            top: 24px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-2xl">
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 w-full z-50 glass-nav flex justify-between items-center px-margin-desktop h-2xl shadow-sm">
+<div class="flex items-center gap-md">
+<span class="font-display text-headline-md text-primary">Trrip AI</span>
+</div>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Explore</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Community</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Support</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional and friendly user profile headshot in a bright, modern setting. The lighting is soft and natural, emphasizing a high-end corporate aesthetic. The background is a blurred minimalist office with blue and white tones, matching the Trrip AI brand palette. The subject is smiling warmly, conveying confidence and accessibility for a premium travel planning service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFVSY7WMo3MMe9KIMz7DqHT0Fbfz5STQVit9jFAnNCsLH3lIxU9EY9jolOF3P-wMLo3kdTtVkOL2hNDYJvQl-zpy8ZIng7gxk0ZfHGoRTDLcwU4C3cYhieTim7N02kEjWsNuDyKXhIVplMWCYLTULxR4ypTJvAte77atmyoJJX70gCyDW1F6j6B2kS5-tuX2zk8m3a_RlQFgykCcApoPAZJ5vtt16_LxIxZGijb4Q5AjmGyHNWk8a6UVbHziJrV86gJw6rljtpQmQ"/>
+</div>
+</div>
+</header>
+<main class="pt-3xl max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop mt-md">
+<!-- Header Section -->
+<div class="mb-xl">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Confirm Trip Details</h1>
+<p class="font-body-lg text-on-surface-variant mt-xs">We've extracted these details from your upload. Please review and edit before we generate your itinerary.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Left Column: Data Review Canvas -->
+<div class="lg:col-span-8 space-y-lg relative">
+<div class="timeline-line hidden md:block"></div>
+<!-- Flight Card -->
+<div class="relative pl-0 md:pl-xl">
+<div class="timeline-dot hidden md:block"></div>
+<div class="bg-surface-container-lowest rounded-xl p-lg card-shadow transition-all duration-300">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-sm">
+<div class="bg-primary-container/20 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="flight_takeoff">flight_takeoff</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm">Flight Information</h3>
+</div>
+<button class="text-primary hover:bg-primary-container/10 px-md py-sm rounded-lg transition-colors font-label-md">
+<span class="material-symbols-outlined text-[18px] mr-1" data-icon="edit">edit</span> Edit
+                            </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-sm">
+<label class="text-label-sm text-on-surface-variant">Airline &amp; Flight No.</label>
+<input class="w-full border-outline-variant rounded-lg p-sm bg-surface-bright focus:ring-2 focus:ring-primary-container transition-all" type="text" value="Emirates EK204"/>
+</div>
+<div class="space-y-sm">
+<label class="text-label-sm text-on-surface-variant">Travel Class</label>
+<select class="w-full border-outline-variant rounded-lg p-sm bg-surface-bright focus:ring-2 focus:ring-primary-container transition-all">
+<option>Economy</option>
+<option selected="">Business</option>
+<option>First Class</option>
+</select>
+</div>
+</div>
+<div class="mt-lg grid grid-cols-1 md:grid-cols-3 gap-lg p-md bg-surface-variant/30 rounded-xl border border-dashed border-outline-variant">
+<div class="text-center md:text-left">
+<p class="text-label-sm text-on-surface-variant">Departure</p>
+<p class="font-headline-sm text-primary">DXB</p>
+<p class="text-body-sm">Dubai Intl</p>
+<p class="text-label-sm font-bold mt-1">Oct 12, 09:45 AM</p>
+</div>
+<div class="flex flex-col items-center justify-center">
+<div class="w-full h-px bg-outline-variant relative">
+<span class="material-symbols-outlined absolute left-1/2 -top-3 -translate-x-1/2 bg-surface-container-lowest px-2 text-on-surface-variant" data-icon="flight">flight</span>
+</div>
+<p class="text-label-sm text-on-surface-variant mt-2">14h 20m</p>
+</div>
+<div class="text-center md:text-right">
+<p class="text-label-sm text-on-surface-variant">Arrival</p>
+<p class="font-headline-sm text-primary">JFK</p>
+<p class="text-body-sm">John F. Kennedy</p>
+<p class="text-label-sm font-bold mt-1">Oct 12, 04:05 PM</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Hotel Card -->
+<div class="relative pl-0 md:pl-xl">
+<div class="timeline-dot hidden md:block"></div>
+<div class="bg-surface-container-lowest rounded-xl p-lg card-shadow transition-all duration-300">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-sm">
+<div class="bg-primary-container/20 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="hotel">hotel</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm">Accommodation</h3>
+</div>
+<div class="flex gap-sm">
+<button class="text-error hover:bg-error-container/20 p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+<button class="text-primary hover:bg-primary-container/10 px-md py-sm rounded-lg transition-colors font-label-md">
+<span class="material-symbols-outlined text-[18px] mr-1" data-icon="edit">edit</span> Edit
+                                </button>
+</div>
+</div>
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="w-full md:w-1/3 rounded-xl overflow-hidden h-32 md:h-auto border border-outline-variant">
+<div class="w-full h-full bg-cover bg-center" data-alt="A luxurious, minimalist hotel room with floor-to-ceiling windows overlooking a modern city skyline at sunset. The interior features clean lines, a neutral color palette of soft grays and warm whites, and premium textures. Soft, ambient lighting creates a peaceful and high-end atmosphere, perfectly embodying the Trrip AI's refined and effortless travel aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDjlLMs2lxwTA0ML_a5ZSohCtBokZYTHVdFkwJVGMMCe6jPY6MgLEfN3U8kJYaNPjakNH7QVqKyRMvMedaGA17nZE9jr7QVzLorgZQYO-TrrwyqrsvRmm1c0bc1TJStgnsdNsWD2xLua4HtRhqAypuShSw0q42_llOnLFFa4WXrJSFlEBarsNHeYu1a6tpFiNL16nIYa9RyiG1lQ3XOioZm5vn2XaEUnEGaTwseI3XLOGXzTptUSZDJ0l1aQEASYRk3uUJO6LmHYeo')"></div>
+</div>
+<div class="flex-1 space-y-md">
+<div class="space-y-sm">
+<label class="text-label-sm text-on-surface-variant">Hotel Name</label>
+<input class="w-full border-outline-variant rounded-lg p-sm bg-surface-bright focus:ring-2 focus:ring-primary-container transition-all" type="text" value="The Edition New York"/>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-sm">
+<label class="text-label-sm text-on-surface-variant">Check-in</label>
+<input class="w-full border-outline-variant rounded-lg p-sm bg-surface-bright" type="date" value="2024-10-12"/>
+</div>
+<div class="space-y-sm">
+<label class="text-label-sm text-on-surface-variant">Check-out</label>
+<input class="w-full border-outline-variant rounded-lg p-sm bg-surface-bright" type="date" value="2024-10-18"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Transport Card -->
+<div class="relative pl-0 md:pl-xl">
+<div class="timeline-dot hidden md:block"></div>
+<div class="bg-surface-container-lowest rounded-xl p-lg card-shadow transition-all duration-300">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-sm">
+<div class="bg-primary-container/20 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm">Ground Transport</h3>
+</div>
+<button class="text-primary hover:bg-primary-container/10 px-md py-sm rounded-lg transition-colors font-label-md">
+<span class="material-symbols-outlined text-[18px] mr-1" data-icon="add">add</span> Add New
+                            </button>
+</div>
+<div class="p-md bg-secondary-container/20 rounded-xl flex items-center justify-between border border-secondary-container">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-secondary" data-icon="commute">commute</span>
+<div>
+<p class="font-label-md text-on-surface">JFK to Manhattan Transfer</p>
+<p class="text-body-sm text-on-surface-variant">Private Chauffeur • Confirmed</p>
+</div>
+</div>
+<span class="bg-on-tertiary-fixed text-on-tertiary px-3 py-1 rounded-full text-label-sm font-bold">17:30 PM</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Summary & Actions -->
+<div class="lg:col-span-4">
+<div class="sticky top-2xl space-y-lg">
+<!-- Trip Snapshot -->
+<div class="bg-surface-container-high rounded-xl p-lg card-shadow">
+<h4 class="font-headline-sm text-headline-sm mb-md">Trip Snapshot</h4>
+<div class="space-y-md">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-body-md">Duration</span>
+<span class="font-bold text-on-surface">6 Days, 5 Nights</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-body-md">Travelers</span>
+<span class="font-bold text-on-surface">2 Adults</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-body-md">Destination</span>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="location_on">location_on</span>
+<span class="font-bold text-on-surface">New York, USA</span>
+</div>
+</div>
+</div>
+<div class="mt-lg pt-lg border-t border-outline-variant">
+<div class="flex items-center justify-between text-primary font-bold">
+<span>Detected Entities</span>
+<span>14</span>
+</div>
+</div>
+</div>
+<!-- CTA Actions -->
+<div class="flex flex-col gap-md">
+<button class="w-full bg-primary text-on-primary py-md rounded-xl font-headline-sm shadow-md hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                            Generate AI Itinerary
+                        </button>
+<button class="w-full bg-surface-container text-on-surface py-md rounded-xl font-label-md hover:bg-surface-container-highest transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+                            Save Draft
+                        </button>
+</div>
+<!-- AI Confidence Alert -->
+<div class="bg-secondary-container/30 border border-secondary-container p-md rounded-xl flex gap-md">
+<span class="material-symbols-outlined text-secondary" data-icon="info">info</span>
+<p class="text-body-sm text-on-secondary-container leading-tight">
+                            Our AI is <span class="font-bold">98% confident</span> in this extraction. Double check the flight times as they occasionally shift.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- SideNav (Shared Component for Mobile-Hidden, Desktop-Visible if applicable, here we use TopBar) -->
+<!-- Floating Action Button for mobile quick-add -->
+<button class="md:hidden fixed bottom-margin-mobile right-margin-mobile w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center z-50">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<script>
+        // Micro-interaction for inputs
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('label').classList.add('text-primary');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.querySelector('label').classList.remove('text-primary');
+            });
+        });
+        
+        // Simulating some loading state for the generate button
+        const generateBtn = document.querySelector('button.bg-primary');
+        generateBtn.addEventListener('click', () => {
+            const originalContent = generateBtn.innerHTML;
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Analyzing Data...
+            `;
+            setTimeout(() => {
+                generateBtn.innerHTML = originalContent;
+                generateBtn.disabled = false;
+            }, 2000);
+        });
+    </script>
+</body></html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Register | Trrip AI</title>
+<!-- Google Fonts: Be Vietnam Pro (Design System) & Poppins (User Request) -->
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#dae2fd",
+                    "primary-container": "#4da8ff",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "outline": "#707883",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-background": "#0b1c30",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#00497d",
+                    "surface-tint": "#0061a3",
+                    "tertiary-container": "#a1a4a6",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "error": "#ba1a1a",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-container-low": "#eff4ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#373a3c",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#404752",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary-fixed": "#131b2e",
+                    "primary": "#0061a3",
+                    "on-primary-container": "#003c67",
+                    "primary-fixed-dim": "#9ecaff",
+                    "tertiary": "#5c5f61",
+                    "inverse-surface": "#213145",
+                    "surface-bright": "#f8f9ff",
+                    "on-secondary-container": "#5c647a",
+                    "on-tertiary-fixed": "#191c1e",
+                    "error-container": "#ffdad6",
+                    "inverse-primary": "#9ecaff",
+                    "tertiary-fixed": "#e0e3e5",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "secondary": "#565e74",
+                    "surface": "#f8f9ff",
+                    "primary-fixed": "#d1e4ff",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#001d36",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "surface-container": "#e5eeff",
+                    "surface-container-high": "#dce9ff",
+                    "outline-variant": "#c0c7d3",
+                    "surface-variant": "#d3e4fe",
+                    "background": "#f8f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "2xl": "48px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "max-width": "1280px",
+                    "3xl": "64px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "gutter": "20px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Be Vietnam Pro"],
+                    "display": ["Be Vietnam Pro"],
+                    "label-sm": ["Be Vietnam Pro"],
+                    "body-lg": ["Be Vietnam Pro"],
+                    "headline-sm": ["Be Vietnam Pro"],
+                    "headline-md": ["Be Vietnam Pro"],
+                    "body-sm": ["Be Vietnam Pro"],
+                    "body-md": ["Be Vietnam Pro"],
+                    "label-md": ["Be Vietnam Pro"],
+                    "poppins": ["Poppins", "sans-serif"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<main class="flex min-h-screen w-full">
+<!-- Left Side: Branding & Experience (Split Screen) -->
+<section class="hidden lg:flex w-1/2 relative bg-primary-container overflow-hidden items-center justify-center p-2xl">
+<!-- Background Layer -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center scale-105 transform hover:scale-100 transition-transform duration-[10000ms]" data-alt="A cinematic, high-resolution aerial view of a winding road through a lush green alpine landscape under soft golden hour light. The aesthetic is premium and travel-focused, using a palette of deep blues and vibrant greens to evoke a sense of freedom and discovery. The lighting is ethereal, creating soft gradients and a modern, high-contrast visual style perfect for a travel technology brand." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuARqpXPGrvlyY6sx7uLfQ3gfPLImvA9gfCbw64R9wvSSddxn4LuUDSOJ5PmFyJYxZNaBMr1lMDv2gDdEZxZw1XzsLi5_BrGLBSesjEenMAVu_VPvBsAmvx7JMvc5TY2Umzr0BVjuPmmsk9KFM8cPUjpWduAWDgUiEqirFny2RYihCExlkJoRSAtX-e2rtGOLfimqJcjNyNn7vOOTKnqADFCk9qJUasZS9gz_AuNu_1opIiXYG5cjOuqn4eoJXQ1InApEgowIBeKh5o')"></div>
+<div class="absolute inset-0 bg-gradient-to-br from-primary/80 via-primary/40 to-transparent mix-blend-multiply"></div>
+</div>
+<!-- Content Overlay -->
+<div class="relative z-10 max-w-lg text-white">
+<div class="mb-lg">
+<span class="font-display text-display text-white tracking-tighter">Trrip AI</span>
+</div>
+<h1 class="font-headline-lg text-white mb-md leading-tight">Your intelligent companion for every mile.</h1>
+<p class="font-body-lg text-white/90 mb-xl">Join thousands of modern explorers who use AI to craft seamless, personalized itineraries in seconds.</p>
+<!-- Bento-style Feature Micro-cards -->
+<div class="grid grid-cols-2 gap-md">
+<div class="bg-white/10 backdrop-blur-md border border-white/20 p-md rounded-xl">
+<span class="material-symbols-outlined mb-sm text-primary-fixed">auto_awesome</span>
+<p class="font-label-md text-white">Smart Routing</p>
+</div>
+<div class="bg-white/10 backdrop-blur-md border border-white/20 p-md rounded-xl">
+<span class="material-symbols-outlined mb-sm text-primary-fixed">group</span>
+<p class="font-label-md text-white">Social Sharing</p>
+</div>
+</div>
+</div>
+<!-- Animated Atmosphere Decoration -->
+<div class="absolute bottom-10 left-10 opacity-20 pointer-events-none">
+<div class="w-64 h-64 border-[32px] border-white rounded-full"></div>
+</div>
+</section>
+<!-- Right Side: Registration Form -->
+<section class="w-full lg:w-1/2 flex flex-col justify-center items-center p-margin-mobile md:p-2xl bg-surface">
+<!-- Mobile Logo -->
+<div class="lg:hidden w-full max-w-md mb-2xl">
+<span class="font-display text-headline-lg text-primary">Trrip AI</span>
+</div>
+<div class="w-full max-w-md">
+<div class="mb-xl">
+<h2 class="font-poppins font-semibold text-3xl text-on-surface mb-xs">Create Account</h2>
+<p class="font-body-md text-on-surface-variant">Start your journey with a premium travel experience.</p>
+</div>
+<form class="space-y-lg" onsubmit="return false;">
+<!-- Name Input -->
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant block" for="name">Full Name</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">person</span>
+<input class="w-full h-[52px] pl-12 pr-4 rounded-xl border border-outline-variant bg-surface-container-lowest focus:ring-4 focus:ring-primary-container/20 focus:border-primary outline-none transition-all font-body-md" id="name" placeholder="John Doe" type="text"/>
+</div>
+</div>
+<!-- Email Input -->
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant block" for="email">Email Address</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">mail</span>
+<input class="w-full h-[52px] pl-12 pr-4 rounded-xl border border-outline-variant bg-surface-container-lowest focus:ring-4 focus:ring-primary-container/20 focus:border-primary outline-none transition-all font-body-md" id="email" placeholder="name@company.com" type="email"/>
+</div>
+</div>
+<!-- Password Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant block" for="password">Password</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">lock</span>
+<input class="w-full h-[52px] pl-12 pr-4 rounded-xl border border-outline-variant bg-surface-container-lowest focus:ring-4 focus:ring-primary-container/20 focus:border-primary outline-none transition-all font-body-md" id="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant block" for="confirm-password">Confirm Password</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">lock_reset</span>
+<input class="w-full h-[52px] pl-12 pr-4 rounded-xl border border-outline-variant bg-surface-container-lowest focus:ring-4 focus:ring-primary-container/20 focus:border-primary outline-none transition-all font-body-md" id="confirm-password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+</div>
+<!-- Terms Checkbox -->
+<div class="flex items-start gap-sm">
+<input class="mt-1 w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer" id="terms" type="checkbox"/>
+<label class="font-body-sm text-on-surface-variant" for="terms">
+                            I agree to the <a class="text-primary hover:underline font-medium" href="#">Terms of Service</a> and <a class="text-primary hover:underline font-medium" href="#">Privacy Policy</a>.
+                        </label>
+</div>
+<!-- Main CTA -->
+<button class="w-full h-[56px] bg-primary text-on-primary font-poppins font-semibold text-lg rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 active:scale-[0.98] transition-all flex items-center justify-center gap-sm" type="submit">
+                        Create Account
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<!-- Social Auth Divider -->
+<div class="relative py-md">
+<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant"></div></div>
+<div class="relative flex justify-center"><span class="bg-surface px-md font-label-md text-outline">OR REGISTER WITH</span></div>
+</div>
+<!-- Social Buttons -->
+<div class="grid grid-cols-2 gap-md">
+<button class="flex items-center justify-center gap-sm h-[48px] border border-outline-variant rounded-xl font-label-md text-on-surface hover:bg-surface-container transition-colors">
+<svg class="w-5 h-5" viewbox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+                            Google
+                        </button>
+<button class="flex items-center justify-center gap-sm h-[48px] border border-outline-variant rounded-xl font-label-md text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">apps</span>
+                            Apple
+                        </button>
+</div>
+<p class="text-center font-body-sm text-on-surface-variant mt-xl">
+                        Already have an account? <a class="text-primary font-semibold hover:underline" href="#">Sign In</a>
+</p>
+</form>
+</div>
+<!-- Footer Links -->
+<footer class="mt-2xl flex gap-lg font-label-sm text-outline">
+<a class="hover:text-primary" href="#">Support</a>
+<a class="hover:text-primary" href="#">Contact</a>
+<span>© 2024 Trrip AI</span>
+</footer>
+</section>
+</main>
+<script>
+        // Simple micro-interaction for input fields
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('scale-[1.01]');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+
+        // Form submission animation mock
+        const form = document.querySelector('form');
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            `;
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Success!';
+                submitBtn.classList.replace('bg-primary', 'bg-green-600');
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalContent;
+                    submitBtn.disabled = false;
+                    submitBtn.classList.replace('bg-green-600', 'bg-primary');
+                }, 2000);
+            }, 1500);
+        });
+    </script>
+</body></html>

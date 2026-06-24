@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trrip AI - Itinerary Generator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #f8f9ff;
+            color: #0b1c30;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .itinerary-line::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5eeff;
+            z-index: 0;
+        }
+        .itinerary-dot {
+            position: relative;
+            z-index: 10;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0061a3;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#dae2fd",
+                        "primary-container": "#4da8ff",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#0b1c30",
+                        "outline": "#707883",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-background": "#0b1c30",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#00497d",
+                        "surface-tint": "#0061a3",
+                        "tertiary-container": "#a1a4a6",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#373a3c",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#404752",
+                        "secondary-fixed": "#dae2fd",
+                        "surface-dim": "#cbdbf5",
+                        "on-secondary-fixed": "#131b2e",
+                        "primary": "#0061a3",
+                        "on-primary-container": "#003c67",
+                        "primary-fixed-dim": "#9ecaff",
+                        "tertiary": "#5c5f61",
+                        "inverse-surface": "#213145",
+                        "surface-bright": "#f8f9ff",
+                        "on-secondary-container": "#5c647a",
+                        "on-tertiary-fixed": "#191c1e",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#9ecaff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "secondary": "#565e74",
+                        "surface": "#f8f9ff",
+                        "primary-fixed": "#d1e4ff",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#001d36",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "surface-container": "#e5eeff",
+                        "surface-container-high": "#dce9ff",
+                        "outline-variant": "#c0c7d3",
+                        "surface-variant": "#d3e4fe",
+                        "background": "#f8f9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "2xl": "48px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "max-width": "1280px",
+                        "3xl": "64px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Be Vietnam Pro"],
+                        "display": ["Be Vietnam Pro"],
+                        "label-sm": ["Be Vietnam Pro"],
+                        "headline-lg-mobile": ["Be Vietnam Pro"],
+                        "body-lg": ["Be Vietnam Pro"],
+                        "headline-sm": ["Be Vietnam Pro"],
+                        "headline-md": ["Be Vietnam Pro"],
+                        "body-sm": ["Be Vietnam Pro"],
+                        "body-md": ["Be Vietnam Pro"],
+                        "label-md": ["Be Vietnam Pro"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-desktop h-2xl bg-surface/80 backdrop-blur-md shadow-sm">
+<div class="flex items-center gap-md">
+<span class="font-display text-headline-md text-primary">Trrip AI</span>
+<nav class="hidden md:flex gap-lg ml-xl">
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Explore</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Community</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a modern, stylish traveler in their late 20s, with warm lighting and a soft bokeh background that suggests a clean, high-end lifestyle. The visual style is crisp and professional, using a natural color palette that fits into a premium AI-driven travel platform's aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJJU9ixuAai6YT0gECLnnf0cTyfQazqjwMbt53RGurGzANlpPRGoTTm6wIPGDTH1rnzSh0hBmWAZMFy004dfe1GsE_oXe_mkamaja4gSl_Ypl8Rrn43im1kE_c1Qmdj5Sm3YipyNn-BxsLG44E1hujxJxi1MwN8bZ_RXnGTGK1WQs1FYvCD-CetsG1WAB1JWfAG02g9VyyxPWUjmPZA_JHkv8EH-Tpo79VrWM8a_5pkmkjQKjsK6SIc9GQ6oEHmAxWP8_kMpnRA90"/>
+</div>
+</div>
+</header>
+<div class="flex pt-2xl h-screen overflow-hidden">
+<!-- Sidebar Shell (Shared Component Blueprint) -->
+<aside class="hidden md:flex flex-col h-full sticky top-0 left-0 p-lg gap-md bg-surface shadow-sm w-64 border-r border-outline-variant/10">
+<div class="flex flex-col gap-sm mb-lg">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[20px]" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<span class="font-headline-sm text-primary">Premium</span>
+</div>
+</div>
+<nav class="flex flex-col gap-xs flex-grow">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary font-bold border-r-4 border-primary bg-primary-container/10" href="#">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-label-md">Create Itinerary</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="travel_explore">travel_explore</span>
+<span class="font-label-md">My Itineraries</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+<span class="font-label-md">Shared Itineraries</span>
+</a>
+</nav>
+<div class="flex flex-col gap-xs mt-auto pt-lg border-t border-outline-variant/10">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col md:flex-row overflow-hidden bg-background">
+<!-- Left: Extracted Travel Info (Fixed Context) -->
+<section class="w-full md:w-[380px] flex flex-col p-lg border-r border-outline-variant/20 bg-surface-container-lowest overflow-y-auto">
+<div class="mb-lg">
+<h2 class="font-headline-sm text-on-surface mb-xs">Trip Overview</h2>
+<p class="font-body-sm text-on-surface-variant">Extracted from your preferences</p>
+</div>
+<div class="space-y-md">
+<!-- Destination Card -->
+<div class="p-md rounded-xl bg-surface border border-outline-variant/30 shadow-sm">
+<div class="flex items-center justify-between mb-sm">
+<span class="font-label-sm text-primary uppercase">Destination</span>
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="location_on">location_on</span>
+</div>
+<h3 class="font-headline-sm">Tokyo, Japan</h3>
+<p class="font-body-sm text-on-surface-variant mt-xs">Autumn Season • 7 Days</p>
+</div>
+<!-- Traveler Profile -->
+<div class="p-md rounded-xl bg-surface border border-outline-variant/30 shadow-sm">
+<span class="font-label-sm text-primary uppercase block mb-sm">Preferences</span>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-xs rounded-full bg-secondary-container text-on-secondary-fixed-variant text-[12px] font-medium">Culinary Explorer</span>
+<span class="px-sm py-xs rounded-full bg-secondary-container text-on-secondary-fixed-variant text-[12px] font-medium">Urban Photography</span>
+<span class="px-sm py-xs rounded-full bg-secondary-container text-on-secondary-fixed-variant text-[12px] font-medium">Minimalist Stays</span>
+<span class="px-sm py-xs rounded-full bg-secondary-container text-on-secondary-fixed-variant text-[12px] font-medium">Fast-paced</span>
+</div>
+</div>
+<!-- Budget Tracking -->
+<div class="p-md rounded-xl bg-surface border border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-label-sm text-primary uppercase">Budget Estimate</span>
+<span class="font-label-md text-on-surface">$2,400</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[65%]"></div>
+</div>
+<div class="flex justify-between mt-xs">
+<span class="text-[11px] text-on-surface-variant">Spent: $1,560</span>
+<span class="text-[11px] text-on-surface-variant">Remaining: $840</span>
+</div>
+</div>
+<!-- Map Preview -->
+<div class="relative h-48 rounded-xl overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-location="Tokyo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUQwrK7UsUCCJm9fO0EeTQhplyrS0zHBQLQJesbqlv04gclAQ9lpzZJvJFuvAo3gAnzuZNH8YMt8iyr3ydzISMCfa2riVDC6W4IxqKomxPMcZ6UvLErk8yqtcXIyESRNzLd_doPLF3K97s9Jf4AFv2E-2Ckq7y6Rz-HC8Rk7IrGhDQI6kKR8JZCHL_VEvCWam7R6wPBxNS62_eI86vNTqx5ng2ANFs6Ce1o465TyBCz5csY_JVEE3s1yLHVdDOAR_28cKb0AtGQBY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-md">
+<button class="w-full py-sm bg-white/10 backdrop-blur-md border border-white/20 rounded-lg text-white font-label-md flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="map">map</span>
+                                View Interactive Map
+                            </button>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-lg">
+<button class="w-full py-md bg-surface-container hover:bg-surface-variant text-on-surface-variant rounded-xl font-label-md flex items-center justify-center gap-md transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+                        Modify Input Details
+                    </button>
+</div>
+</section>
+<!-- Right: Generated AI Itinerary -->
+<section class="flex-grow flex flex-col h-full bg-white relative overflow-hidden">
+<!-- Header Toolbar -->
+<div class="flex items-center justify-between px-lg py-md border-b border-outline-variant/10 glass-panel sticky top-0 z-40">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+<h1 class="font-headline-md">Your Tokyo Journey</h1>
+</div>
+<div class="flex items-center gap-sm">
+<button class="hidden md:flex items-center gap-xs px-md py-sm rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="refresh">refresh</span>
+<span class="font-label-md">Regenerate</span>
+</button>
+<button class="p-sm rounded-lg bg-primary text-on-primary hover:opacity-90 shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+</button>
+<button class="p-sm rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="ios_share">ios_share</span>
+</button>
+<button class="p-sm rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+</button>
+</div>
+</div>
+<!-- Itinerary Canvas -->
+<div class="flex-grow overflow-y-auto p-lg space-y-2xl">
+<!-- Day 1 Section -->
+<div class="relative">
+<div class="flex items-center gap-md mb-xl">
+<div class="w-12 h-12 rounded-2xl bg-primary-container flex items-center justify-center text-on-primary-container shadow-sm">
+<span class="font-headline-sm">01</span>
+</div>
+<div>
+<h3 class="font-headline-md">Day 1: Neon Hearts &amp; Old Traditions</h3>
+<p class="font-body-sm text-on-surface-variant">Shinjuku &amp; Meiji Shrine Exploration</p>
+</div>
+</div>
+<div class="itinerary-line space-y-xl pl-10 relative">
+<!-- Morning -->
+<div class="relative">
+<div class="itinerary-dot absolute -left-[27px] top-2 w-3.5 h-3.5 rounded-full bg-primary ring-4 ring-white"></div>
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="flex-grow">
+<div class="flex items-center gap-xs text-primary font-label-sm uppercase mb-xs tracking-wider">
+<span class="material-symbols-outlined text-[14px]" data-icon="wb_sunny">wb_sunny</span>
+                                            Morning
+                                        </div>
+<h4 class="font-headline-sm mb-sm">Spiritual Serenity at Meiji Jingu</h4>
+<p class="font-body-md text-on-surface-variant leading-relaxed mb-md">
+                                            Start your journey early to beat the crowds. Walk through the massive Torii gates and experience the transition from city bustle to forest tranquility. Witness a traditional Shinto ceremony if you're lucky.
+                                        </p>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-xs px-sm py-1 rounded bg-surface-container-high text-on-surface-variant text-[12px]">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+                                                09:00 AM
+                                            </div>
+<div class="flex items-center gap-xs px-sm py-1 rounded bg-surface-container-high text-on-surface-variant text-[12px]">
+<span class="material-symbols-outlined text-[16px]" data-icon="payments">payments</span>
+                                                Free
+                                            </div>
+</div>
+</div>
+<div class="w-full md:w-48 h-32 rounded-xl overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A serene morning view of the Meiji Jingu shrine in Tokyo, featuring the massive wooden Torii gate surrounded by lush green forest trees. Soft morning sunlight filters through the leaves, creating a peaceful and spiritual atmosphere. Minimalist, high-end travel photography style with a focus on natural textures and clean lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCraGe8M2A6CIcUin17paVhAJWJwh7SYwtXFjc_w0WTjfCr5ywyUKviJrAkmDKZ7T4Br5mNDSC29Op_ugARgxpMFIXy00mbfbD1Ibu1BvvCtY5b9ZA8uTycKQ1HOC_dGGj8H5egZTneR9Jsb6_bo-iWzUS6rUpLU0RK-zNLxv63kYg84Nz22jRwHCgTqrW_h42PnBWPHUdqUy2P1cEviU7LFV1as9lF2Il21-AufDDoMEbt31Y1Zy8fq4XuifFMjWORvPQYrSWwLLs"/>
+</div>
+</div>
+</div>
+<!-- Afternoon -->
+<div class="relative">
+<div class="itinerary-dot absolute -left-[27px] top-2 w-3.5 h-3.5 rounded-full bg-primary ring-4 ring-white"></div>
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="flex-grow">
+<div class="flex items-center gap-xs text-primary font-label-sm uppercase mb-xs tracking-wider">
+<span class="material-symbols-outlined text-[14px]" data-icon="wb_twilight">wb_twilight</span>
+                                            Afternoon
+                                        </div>
+<h4 class="font-headline-sm mb-sm">Lunch &amp; Harajuku Wander</h4>
+<p class="font-body-md text-on-surface-variant leading-relaxed mb-md">
+                                            Explore Takeshita Street for the quirky side of Tokyo, then head to Omotesando for high-end architecture and boutique shopping. Grab a seasonal crepe or visit a concept cafe.
+                                        </p>
+<div class="p-md rounded-xl bg-surface-container-lowest border border-outline-variant/30 flex items-center gap-md mb-md">
+<span class="material-symbols-outlined text-primary text-[32px]" data-icon="restaurant">restaurant</span>
+<div>
+<p class="font-label-md text-primary">AI Suggestion: Maisen Tonkatsu</p>
+<p class="text-[12px] text-on-surface-variant">Famous breaded pork in a converted bathhouse.</p>
+</div>
+</div>
+</div>
+<div class="w-full md:w-48 h-32 rounded-xl overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="The vibrant and colorful Takeshita Street in Harajuku, Tokyo, during a sunny afternoon. The scene is filled with trendy youth culture, eclectic shop fronts, and colorful street food. The lighting is bright and energetic, capturing the pulse of Tokyo's modern fashion scene in a clean, cinematic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDE0oA1gk_G5b62Be8ONttK3EFgkalgVmuBkHqd9ApAxWt7gqYwf_rV023GRIrGWl7yNIX1ktm83NOOfQtadoPxI40KiMxdZWaXVxleXPm2Id4QpYfMvAzsuGbmc661OzJot9QnR9473yC-JrNXsUrpRHrHlau_xiNZuzLihvbxCcpKp79gQelh-D1rqexYPl-bQ5kkMBAXfdTWmJPWjmnO-2fA06G6bqX4p5iqmSril1uW1uIz6G2PPPI8NNekoFru9jtFVqvI-AE"/>
+</div>
+</div>
+</div>
+<!-- Evening -->
+<div class="relative">
+<div class="itinerary-dot absolute -left-[27px] top-2 w-3.5 h-3.5 rounded-full bg-primary ring-4 ring-white"></div>
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="flex-grow">
+<div class="flex items-center gap-xs text-primary font-label-sm uppercase mb-xs tracking-wider">
+<span class="material-symbols-outlined text-[14px]" data-icon="nightlight">nightlight</span>
+                                            Evening
+                                        </div>
+<h4 class="font-headline-sm mb-sm">Shinjuku Golden Gai &amp; Omoide Yokocho</h4>
+<p class="font-body-md text-on-surface-variant leading-relaxed mb-md">
+                                            Immerse yourself in the narrow alleys of Shinjuku. Start at 'Memory Lane' for yakitori, then find a hidden gem bar in Golden Gai. End the night with a panoramic view from the Metropolitan Government Building.
+                                        </p>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-1 rounded bg-primary-container/10 text-primary text-[11px] font-semibold border border-primary/20">Photography Spot</span>
+<span class="px-sm py-1 rounded bg-primary-container/10 text-primary text-[11px] font-semibold border border-primary/20">Nightlife</span>
+<span class="px-sm py-1 rounded bg-primary-container/10 text-primary text-[11px] font-semibold border border-primary/20">Foodie Alert</span>
+</div>
+</div>
+<div class="w-full md:w-48 h-32 rounded-xl overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A cinematic night view of Omoide Yokocho in Shinjuku, Tokyo. Narrow alleys filled with glowing red lanterns, smoke from yakitori grills, and small, cozy bar interiors. The lighting is warm and atmospheric, contrasting with the dark night sky. High-contrast, premium travel editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNiAP4-12DI_4-VE4tyZuLLVro5mkc2OiNjDZFndsoHBYS8Md_Or8HSmPRN4Agkr-pFfp2gerLWAZXsf4eVRCmWWuRsKLB9P4_4qEA5ZGYrXugq-yaczCPAUnHodvYIldO01GyvvOnR8xKpGZrCgQfX4MkfMbfW2fnJdhmF_A7FsnhmD_-pHe0quMxz3CfKaQ5T34ek99fW6o3qX0gZch-RuSfhRbdm8jVQxiIDn_FpBzY3IcxF_yAIiHgDQ2aiHndGakreuKIii8"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Day 2 Preview (Collapsed/Compact) -->
+<div class="p-lg rounded-2xl bg-surface-container border border-outline-variant/30 flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-primary shadow-sm">
+<span class="font-headline-sm">02</span>
+</div>
+<div>
+<h3 class="font-headline-sm">Day 2: Coastal Breeze &amp; Digital Dreams</h3>
+<p class="font-body-sm text-on-surface-variant">TeamLab Planets &amp; Odaiba Waterfront</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="expand_more">expand_more</span>
+</div>
+<!-- AI Smart Tip Card -->
+<div class="p-lg rounded-2xl bg-primary text-on-primary shadow-xl relative overflow-hidden">
+<div class="absolute right-[-20px] top-[-20px] opacity-10">
+<span class="material-symbols-outlined text-[160px]" data-icon="tips_and_updates">tips_and_updates</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined" data-icon="tips_and_updates">tips_and_updates</span>
+<h4 class="font-headline-sm">AI Traveler Insight</h4>
+</div>
+<p class="font-body-md mb-lg leading-relaxed max-w-2xl">
+                                "Based on the current weather forecast for Tuesday, we recommend swapping Day 2 and Day 4 activities. Day 4 has a 60% chance of light rain, which makes the indoor TeamLab Planets exhibition a better fit than the outdoor Hakone day trip."
+                            </p>
+<button class="px-lg py-sm bg-white text-primary rounded-lg font-label-md hover:shadow-lg transition-all active:scale-95">
+                                Apply Optimized Schedule
+                            </button>
+</div>
+</div>
+</div>
+<!-- Footer Quick Actions -->
+<div class="p-lg border-t border-outline-variant/10 bg-white flex flex-wrap gap-md justify-center md:justify-end">
+<button class="flex items-center gap-md px-xl py-md rounded-xl bg-surface-container hover:bg-surface-variant text-on-surface-variant font-label-md transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+                        Regenerate Day 1
+                    </button>
+<button class="flex items-center gap-md px-xl py-md rounded-xl bg-primary text-on-primary font-label-md shadow-lg shadow-primary/20 hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+                        Save to Itineraries
+                    </button>
+</div>
+</section>
+</main>
+</div>
+<!-- Floating Action Button (Shared Component Logic - Rendered on Dashboard/Home context) -->
+<button class="fixed bottom-lg right-lg w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-90 transition-all z-50 md:hidden">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<script>
+        // Micro-interaction for the side tabs
+        const navLinks = document.querySelectorAll('aside nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                navLinks.forEach(l => {
+                    l.classList.remove('text-primary', 'font-bold', 'border-r-4', 'border-primary', 'bg-primary-container/10');
+                    l.classList.add('text-on-surface-variant', 'hover:bg-surface-container');
+                });
+                link.classList.remove('text-on-surface-variant', 'hover:bg-surface-container');
+                link.classList.add('text-primary', 'font-bold', 'border-r-4', 'border-primary', 'bg-primary-container/10');
+            });
+        });
+
+        // Simple animation for the progress bar on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.querySelector('.bg-primary.h-full');
+            progressBar.style.width = '0%';
+            setTimeout(() => {
+                progressBar.style.transition = 'width 1.5s cubic-bezier(0.65, 0, 0.35, 1)';
+                progressBar.style.width = '65%';
+            }, 500);
+        });
+    </script>
+</body></html>
