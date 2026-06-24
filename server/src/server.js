@@ -6,7 +6,7 @@ const port = process.env.PORT || 5000;
 
 await connectDb();
 
-app.listen(port, () => {
-  console.log(`Trrip API listening on http://localhost:${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Trrip API listening on port ${port}`);
 });
 
