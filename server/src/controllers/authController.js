@@ -32,7 +32,7 @@ const serializeUser = (user) => ({
 const cookieOptions = () => ({
   httpOnly: true,
   sameSite: "lax",
-  secure: process.env.NODE_ENV === "production",
+  secure: false, // Must be false for HTTP deployments without SSL
   path: "/",
 });
 
