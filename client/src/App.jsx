@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { AppLayout } from "./components/AppLayout";
 import { AuthLayout } from "./components/AuthLayout";
 import { useAuth } from "./state/AuthContext";
