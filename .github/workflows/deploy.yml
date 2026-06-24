@@ -34,4 +34,4 @@ jobs:
             
             # Restart the Node server using PM2
             export NODE_ENV=production
-            pm2 restart trripp-api || pm2 start src/server.js --name "trripp-api" --update-env
+            pm2 restart trripp-api --update-env || pm2 start src/server.js --name "trripp-api"

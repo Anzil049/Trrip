@@ -20,7 +20,12 @@ app.use(
     credentials: true,
   }),
 );
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginOpenerPolicy: false,
+    contentSecurityPolicy: false,
+  })
+);
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json({ limit: "2mb" }));
