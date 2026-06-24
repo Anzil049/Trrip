@@ -1,6 +1,6 @@
 import { ArrowRight, CalendarDays, Menu, PlaneTakeoff, ShieldCheck, Users2 } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { AnimatedMarqueeHero } from "../components/ui/hero-3";
 import { TopBar } from "../components/TopBar";
@@ -81,8 +81,17 @@ const DEMO_IMAGES = [
 
 export const LandingPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, logout } = useAuth();
   const [creatingTemplateId, setCreatingTemplateId] = useState("");
+  
+  useEffect(() => {
+    if (location.hash === "#builder") {
+      setTimeout(() => {
+        document.getElementById("builder")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [location.hash]);
   
   // New Complex Form State
   const [file, setFile] = useState(null);

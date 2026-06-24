@@ -28,13 +28,13 @@ export const AuthLayout = () => {
             </div>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <span className="chip" style={{ background: "rgba(255,255,255,0.12)", color: "#fff" }}>
-                Auth
+                Smart AI Planning
               </span>
               <span className="chip" style={{ background: "rgba(255,255,255,0.12)", color: "#fff" }}>
-                Uploads
+                Instant Itineraries
               </span>
               <span className="chip" style={{ background: "rgba(255,255,255,0.12)", color: "#fff" }}>
-                Itineraries
+                Easy Sharing
               </span>
             </div>
           </div>

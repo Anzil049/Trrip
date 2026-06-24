@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../utils/api";
+import toast from "react-hot-toast";
 import { ItineraryCard } from "../components/ItineraryCard";
 
 export const ItinerariesPage = () => {
@@ -9,15 +10,38 @@ export const ItinerariesPage = () => {
     api.get("/itineraries").then((data) => setItineraries(data.itineraries || []));
   }, []);
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this itinerary?")) {
-      try {
-        await api.delete(`/itineraries/${id}`);
-        setItineraries(prev => prev.filter(i => i._id !== id));
-      } catch (err) {
-        console.error("Failed to delete itinerary:", err);
-      }
-    }
+  const handleDelete = (id) => {
+    toast((t) => (
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <span style={{ fontWeight: 500 }}>Are you sure you want to delete this itinerary?</span>
+        <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+          <button 
+            className="btn btn-ghost" 
+            style={{ padding: "4px 8px", fontSize: "0.85rem" }}
+            onClick={() => toast.dismiss(t.id)}
+          >
+            Cancel
+          </button>
+          <button 
+            className="btn btn-primary" 
+            style={{ padding: "4px 8px", fontSize: "0.85rem", background: "#ef4444", color: "white", borderColor: "#ef4444" }}
+            onClick={async () => {
+              toast.dismiss(t.id);
+              try {
+                await api.delete(`/itineraries/${id}`);
+                setItineraries(prev => prev.filter(i => i._id !== id));
+                toast.success("Itinerary deleted");
+              } catch (err) {
+                console.error("Failed to delete itinerary:", err);
+                toast.error("Failed to delete itinerary");
+              }
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    ), { duration: 5000 });
   };
 
   return (

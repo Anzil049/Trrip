@@ -3,7 +3,8 @@ import { useAuth } from "../state/AuthContext";
 import { api } from "../utils/api";
 import { StatsStrip } from "../components/StatsStrip";
 import { ItineraryCard } from "../components/ItineraryCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export const DashboardPage = () => {
   const { user } = useAuth();
@@ -30,15 +31,38 @@ export const DashboardPage = () => {
     { label: "Traveler", value: user?.name || "Guest", help: "Logged in session" },
   ];
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this itinerary?")) {
-      try {
-        await api.delete(`/itineraries/${id}`);
-        setItineraries(prev => prev.filter(i => i._id !== id));
-      } catch (err) {
-        console.error("Failed to delete itinerary:", err);
-      }
-    }
+  const handleDelete = (id) => {
+    toast((t) => (
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <span style={{ fontWeight: 500 }}>Are you sure you want to delete this itinerary?</span>
+        <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+          <button 
+            className="btn btn-ghost" 
+            style={{ padding: "4px 8px", fontSize: "0.85rem" }}
+            onClick={() => toast.dismiss(t.id)}
+          >
+            Cancel
+          </button>
+          <button 
+            className="btn btn-primary" 
+            style={{ padding: "4px 8px", fontSize: "0.85rem", background: "#ef4444", color: "white", borderColor: "#ef4444" }}
+            onClick={async () => {
+              toast.dismiss(t.id);
+              try {
+                await api.delete(`/itineraries/${id}`);
+                setItineraries(prev => prev.filter(i => i._id !== id));
+                toast.success("Itinerary deleted");
+              } catch (err) {
+                console.error("Failed to delete itinerary:", err);
+                toast.error("Failed to delete itinerary");
+              }
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    ), { duration: 5000 });
   };
 
   return (
@@ -53,7 +77,16 @@ export const DashboardPage = () => {
             Review previous itineraries, upload new bookings, or turn a trip into a shareable plan in a single flow.
           </p>
           <div style={{ marginTop: 18, display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <Link className="btn btn-primary" to="/upload">
+            <Link 
+              className="btn btn-primary" 
+              to="/#builder"
+              onClick={(e) => {
+                if (window.location.pathname === '/') {
+                  e.preventDefault();
+                  document.getElementById("builder")?.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
               Create itinerary
             </Link>
             <Link className="btn btn-ghost" to="/itineraries">
@@ -80,8 +113,17 @@ export const DashboardPage = () => {
                 Generated itineraries
               </h2>
             </div>
-            <Link className="btn btn-link" to="/upload">
-              New upload
+            <Link 
+              className="btn btn-link" 
+              to="/#builder"
+              onClick={(e) => {
+                if (window.location.pathname === '/') {
+                  e.preventDefault();
+                  document.getElementById("builder")?.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
+              New itinerary
             </Link>
           </div>
           <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))", gap: 16 }}>

@@ -57,7 +57,7 @@ export const LoginPage = () => {
             <label className="label" htmlFor="password" style={{ marginBottom: 0 }}>
               Password
             </label>
-            <Link to="#" onClick={(e) => { e.preventDefault(); alert("Forgot password functionality coming soon!"); }} style={{ fontSize: "0.85rem", color: "var(--primary)", textDecoration: "none" }}>
+            <Link to="/forgot-password" style={{ fontSize: "0.85rem", color: "var(--primary)", textDecoration: "none" }}>
               Forgot password?
             </Link>
           </div>
