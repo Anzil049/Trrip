@@ -33,4 +33,5 @@ jobs:
             npm install
             
             # Restart the Node server using PM2
-            pm2 restart trripp-api || pm2 start src/server.js --name "trripp-api"
+            export NODE_ENV=production
+            pm2 restart trripp-api || pm2 start src/server.js --name "trripp-api" --update-env
