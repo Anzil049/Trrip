@@ -4,6 +4,8 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import path from "path";
+import { fileURLToPath } from "url";
 import authRoutes from "./routes/authRoutes.js";
 import itineraryRoutes from "./routes/itineraryRoutes.js";
 import shareRoutes from "./routes/shareRoutes.js";
@@ -32,6 +34,20 @@ app.use("/api/auth", authRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/itineraries", itineraryRoutes);
 app.use("/api/share", shareRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  
+  app.use(express.static(path.join(__dirname, "../../client/dist")));
+  
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.join(__dirname, "../../client/dist/index.html"));
+  });
+}
 
 app.use(notFound);
 app.use(errorHandler);
